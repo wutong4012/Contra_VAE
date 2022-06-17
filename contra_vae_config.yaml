@@ -1,0 +1,44 @@
+optim_params:
+  pretrain_lr: 2e-4 ###
+  ratio_increase: 0.25 # frange_cycle_zero_linear, the percentage for the annealing stage.
+  ratio_zero: 0.25 # frange_cycle_zero_linear, the percentage for the pure auto-encoding stage.
+  max_grad_norm: 1.0
+  warmup_steps: 20000 # Linear warmup over warmup_steps.
+  scheduler: 'warmup' # plateau/warmup 
+  optimizer: 'adam' # adamw/adam/sgd 
+  monitor: 'train_all_loss' # remind chang filename ###
+
+data_params:
+  train_data_path: '/cognitive_comp/wutong/source/data_base/contra_vae/train_split_exp1'
+  test_data_path: '/cognitive_comp/wutong/source/data_base/contra_vae/test_exp1'
+  batch_size: 30 # ddp max is 20, mix precision max is 24 load checkpoint minus 4  ###
+  file_nums: 50 # max is 200
+  dataloader_workers: 9
+
+model_params:
+  checkpoint_name: exp1  ###### 
+  checkpoint_path: '/cognitive_comp/wutong/contra_vae/'
+  load_model_path: # '/cognitive_comp/wutong/contra_vae/checkpoints/exp8-step=10919-train_bb_loss=3.04.ckpt' ###
+  encoder_model_path: '/cognitive_comp/wutong/source/model_base/bert-base/'
+  decoder_model_path: '/cognitive_comp/wutong/source/model_base/gpt2-base/'
+
+  eps: 1e-6
+  loss_beta_m: 1.0 # max beta
+  only_bb_loss: False ### 
+  length_weighted_loss: True
+  freeze_decoder: False
+  add_mlp: False ###
+  mlp_num: 4 ###
+
+  mlm_prob: 0.15 # Ratio of tokens to mask for masked language modeling loss
+  latent_dim: 64
+  embed_dim: 768
+  hidden_dim: 150
+ 
+exp_params:
+  seed: 1337
+  cuda: True
+  save_n_steps: 10
+  train_steps: 50000
+  num_gpus: 4 ###
+  just_test: False
